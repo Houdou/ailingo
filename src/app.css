@@ -1,0 +1,10 @@
+#app {
+    position: absolute;
+    height: 100vh;
+    width: 100%;
+}
+@media (max-width: 1200px) {
+    #app {
+        width: 100%;
+    }
+}
