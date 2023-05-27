@@ -55,7 +55,7 @@ const Word = ({
       <Paper shadow={"md"} withBorder p={"md"} h={"90%"} maw={"600px"}>
           <ScrollArea h={"100%"} >
             <Flex gap={"sm"} align={"center"} direction={"column"} justify={"space-between"}>
-              <Title order={1}>{w.english}</Title>
+              <Title order={1}>{w.english} <a href="#" >🔊</a></Title>
               <Group>
                 <Text size={"lg"}>{w.ipa}</Text>
                 <Group>
