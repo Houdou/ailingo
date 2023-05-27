@@ -15,17 +15,20 @@ import {
 import type {Synonym, Word} from "../types";
 import React, {CSSProperties} from "react";
 
+const baseSynImgSideLen = 150
+const synImgBgSize = 300
+
 const Synonym = ({
     synonym
 }: {synonym : Synonym}) => {
     return (
       <Flex gap={"xs"} align={"center"} direction={"column"}>
           {/*<Skeleton width={180} height={180}/>*/}
-          <AspectRatio ratio={1} w={180} h={180} mah={180}>
+          <AspectRatio ratio={1} w={baseSynImgSideLen} h={baseSynImgSideLen} mah={baseSynImgSideLen}>
             <Container style={{
               background: `url(${synonym.example.img_url})`,
-              backgroundPosition: "-180px -180px",
-              backgroundSize: "360px 360px"
+              backgroundPosition: `-${baseSynImgSideLen}px -${baseSynImgSideLen}px`,
+              backgroundSize: `${synImgBgSize}px ${synImgBgSize}px`
             }} />
           </AspectRatio>
           <Text fz={"lg"} fw={700}>{synonym.synonym}</Text>
@@ -40,6 +43,12 @@ const Synonym = ({
       </Flex>
     )
 }
+
+
+// This look good on multiple mobile devices
+const wordImgSizeLen = 300
+const wordImgBgSize = 600
+
 
 const Word = ({
   word
@@ -67,20 +76,20 @@ const Word = ({
                 <Text fz={"sm"} fs={"italic"}>{example.translation}</Text>
               </Stack>
               {/*<Skeleton width={400} height={400}/>*/}
-              <AspectRatio ratio={1} w={400} h={400} mah={400}>
+              <AspectRatio ratio={1}  w={wordImgSizeLen} h={wordImgSizeLen} mah={wordImgSizeLen}>
                 <Container style={{
                   background: `url(${example.img_url})`,
-                  backgroundPosition: "-400px -400px",
-                  backgroundSize: "800px 800px"
+                  backgroundPosition: `-${wordImgSizeLen}px -${wordImgSizeLen}px`,
+                  backgroundSize: `${wordImgBgSize}px ${wordImgBgSize}px`
                 }} />
               </AspectRatio>
               <Divider my={"sm"} w={"100%"}/>
               {/*Synonym*/}
-              <SimpleGrid cols={2} w={400}>
+              <SimpleGrid cols={2} >
                 {
                   synonyms.map(synonym => {
                     return (
-                      <Synonym key={synonym.synonym} synonym={synonym}/>
+                        <Synonym key={synonym.synonym} synonym={synonym}/>
                     );
                   })
                 }
