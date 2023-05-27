@@ -5,7 +5,7 @@ function Loading() {
   const lineHeight = 12;
 
   return (
-    <Paper shadow={"md"} withBorder p={"md"} w={"600px"}>
+    <Paper shadow={"md"} withBorder p={"md"} w={"100%"}>
       <Stack spacing={16} w={"100%"}>
         <Skeleton height={lineHeight} ml={"24px"} width={"calc(100% - 24px)"} radius="xl" />
         {
