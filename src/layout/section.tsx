@@ -5,7 +5,7 @@ export const Section = ({
   title,
   children
 }) => {
-  const mobile = useMediaQuery("(min-width: 360px)");
+  const mobile = useMediaQuery("(max-width: 600px)");
 
   return (
     <Container pr={"24px"} maw={"max(54rem, 100%)"}>

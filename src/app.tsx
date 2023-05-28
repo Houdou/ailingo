@@ -43,7 +43,7 @@ const AppHeader = () => {
   const [theme, setTheme] = useRecoilState(themeState);
   const [user, setUser] = useRecoilState(userState);
   const resetUser = useResetRecoilState(userState);
-  const mobile = useMediaQuery("(min-width: 360px)");
+  const mobile = useMediaQuery("(max-width: 600px)");
 
   const navigate = useNavigate();
 
