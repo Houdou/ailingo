@@ -1,5 +1,7 @@
 import { atom } from "recoil";
 import { v4 as uuid } from "uuid";
+import localStorageEffect from "../effects/localStorage.ts";
+import {User} from "../types";
 
 const newUser = () => {
   return {
@@ -7,15 +9,12 @@ const newUser = () => {
   }
 }
 
-const userState = atom({
+const userState = atom<User>({
   key: 'user',
-  default: () => {
-    const user = localStorage.getItem('user');
-    if (user) {
-      return JSON.parse(user);
-    }
-    return newUser();
-  }
+  default: newUser(),
+  effects: [
+    localStorageEffect("user")
+  ]
 })
 
 export {

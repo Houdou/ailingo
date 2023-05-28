@@ -1,3 +1,7 @@
+export interface User {
+  id: string
+}
+
 export interface Word {
   example:  WordExample;
   synonyms: Synonym[];

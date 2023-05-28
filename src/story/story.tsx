@@ -10,6 +10,7 @@ import {Section} from "../layout/section.tsx";
 
 function Story() {
   const story = useRecoilValue(storyState);
+  console.log(story);
   const sentences = story.split('\n')
   const words = useRecoilValue(wordsState);
 
@@ -50,7 +51,7 @@ function Story() {
       <Center h={"6rem"}>
         <Button
           onClick={() => {
-            navigate("/words/0")
+            navigate("/words/1")
           }}
           variant="gradient"
           size={"xl"}

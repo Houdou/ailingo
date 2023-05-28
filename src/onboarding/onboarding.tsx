@@ -74,14 +74,14 @@ const Onboarding = () => {
             </Grid.Col>
             <Grid.Col span={9}>
               <Button variant={"gradient"} size={"xl"} radius={"sm"} w={"100%"}
-                      onClick={() => {
-                        if(step < 2) {
-                          setStep(step + 1)
-                          return;
-                        }
-                        // Handle submit
-                        navigate("/words/1");
-                      }}
+                  onClick={() => {
+                    if(step < 2) {
+                      setStep(step + 1)
+                      return;
+                    }
+                    // Handle submit
+                    navigate("/words/1");
+                  }}
               >
                 <Text fw={"300"} fz={"24px"}>
                   {

@@ -12,7 +12,7 @@ function Words() {
     const navigate = useNavigate();
 
     useEffect(() => {
-      fetchFakeWords();
+      fetchFakeWords(word_param);
     }, []);
 
     if (loading) {
