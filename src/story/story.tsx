@@ -22,8 +22,8 @@ function Story() {
 
 
   return (
-    <Flex direction={"column"} justify={"space-between"} align={"center"} h={"90vh"} gap={"1rem"} p={"1rem"}>
-      <Container maw={"max(40rem, 60%)"}>
+    <Flex direction={"column"} justify={"space-between"} align={"center"} h={"90vh"} gap={"1rem"} p={"1rem 0"}>
+      <Container maw={"max(40rem, 60%)"} p={0}>
         <Section title={"Review words"}>
           <Paper shadow={"md"} withBorder p={"md"}>
             <Stack>

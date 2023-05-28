@@ -43,8 +43,8 @@ function Words() {
     }
 
     return (
-        <Flex direction={"column"} justify={"space-between"} align={"center"} w={"100%"} h={"90vh"} gap={"1rem"} p={"1rem"}>
-          <Container maw={"max(40rem, 60%)"}>
+        <Flex direction={"column"} justify={"space-between"} align={"center"} w={"100%"} h={"90vh"} gap={"1rem"} p={"1rem 0"}>
+          <Container maw={"max(40rem, 60%)"} p={0}>
             <Section title={"Learn new words"}>
               <Center>
                 <Word key={word.word.english} word={word}/>
