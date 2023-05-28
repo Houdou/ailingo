@@ -6,7 +6,6 @@ import {
   Header,
   Image,
   MantineProvider,
-  MantineTheme,
   Text,
   ThemeIcon,
   Title

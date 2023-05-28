@@ -9,10 +9,11 @@ import {
   Flex,
   TextInput,
   Title,
-  Center, Stepper, Group, Grid
+  Center, Stepper, Group, Grid, createStyles, rem
 } from "@mantine/core";
 import {useState} from "react";
 import {useNavigate} from "react-router-dom";
+import {useMediaQuery} from "@mantine/hooks";
 
 const Section = ({
   title,
@@ -29,6 +30,12 @@ const Section = ({
   )
 }
 
+const useStyles = createStyles((theme) => ({
+  content: {
+    height: "100%"
+  }
+}))
+
 const Onboarding = () => {
     const [step, setStep] = useState(0);
 
@@ -37,14 +44,16 @@ const Onboarding = () => {
       { value: "business_english", label: "Business English" },
       // { value: "saas", label: "Saas" },
     ]);
+    const { classes } = useStyles();
+    const narrow = useMediaQuery("(max-width: 600px)");
 
     const navigate = useNavigate();
 
     return (
         <Flex direction={"column"} justify={"space-between"} w={"100%"} h={"90vh"}>
-          <Stepper active={step} size="sm" maw={"64rem"} w={"100%"} m={"0 auto"}>
+          <Stepper active={step} size="sm" maw={"64rem"} w={"100%"} m={"0 auto"} style={{flexGrow: 10}} classNames={{content: classes.content}}>
             <Stepper.Step label="First step" description="Self intro">
-              <Center h={"80vh"}>
+              <Center h={"100%"}>
                 <Section title={"Describe yourself"}>
                   <TextInput
                     placeholder="The name you want to be called by"
@@ -54,7 +63,7 @@ const Onboarding = () => {
               </Center>
             </Stepper.Step>
             <Stepper.Step label="Second step" description="Choose interests">
-              <Center h={"80vh"}>
+              <Center h={"100%"}>
                 <Section title={"Interested domain"}>
                   <MultiSelect
                     searchable
@@ -74,15 +83,14 @@ const Onboarding = () => {
               </Center>
             </Stepper.Step>
             <Stepper.Step label="Final step" description="Get your">
-              <Center h={"80vh"}>
+              <Center h={"100%"}>
                 <Section title={"That's it, you're all set!"}></Section>
               </Center>
             </Stepper.Step>
           </Stepper>
           <Grid w={"100%"} justify={"space-around"} maw={"600px"} ml={"auto"} mr={"auto"}>
-            <Grid.Col span={3}>
-
-              <Button variant={"default"} size={"xl"} radius={"sm"} w={"100%"}
+            <Grid.Col span={narrow ? 9 : 3}>
+              <Button variant={"default"} size={"xl"} radius={"sm"} w={"100%"} miw={"120px"}
                   onClick={() => step > 0 && setStep(step - 1)}
               >
                 <Text fw={"300"} fz={"24px"}>
@@ -91,7 +99,6 @@ const Onboarding = () => {
               </Button>
             </Grid.Col>
             <Grid.Col span={9}>
-
               <Button variant={"gradient"} size={"xl"} radius={"sm"} w={"100%"}
                       onClick={() => {
                         if(step < 2) {

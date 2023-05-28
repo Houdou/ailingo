@@ -50,7 +50,8 @@ function Words() {
                   GoNext();
                 }}
                 variant="gradient"
-                size={"lg"}
+                size={"xl"}
+
               >{
                 index === words.length - 1 ? "Review" : "Next word"
               }</Button>
