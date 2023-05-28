@@ -8,6 +8,11 @@ import {userState} from "../user/user.state.ts";
 import {useForm} from "@mantine/form";
 
 const useStyles = createStyles((theme) => ({
+  stepBody: {
+    '@media (min-width: 360px)': {
+      display: "none",
+    }
+  },
   content: {
     height: "100%"
   }
@@ -51,7 +56,7 @@ const Onboarding = () => {
 
     return (
         <Flex direction={"column"} justify={"space-between"} w={"100%"} h={"90vh"}>
-          <Stepper active={step} size="sm" maw={"64rem"} w={"100%"} m={"0 auto"} style={{flexGrow: 10}} classNames={{content: classes.content}}>
+          <Stepper active={step} size="sm" maw={"64rem"} w={"100%"} m={"0 auto"} style={{flexGrow: 10}} classNames={{...classes}}>
             <Stepper.Step label="First step" description="Self intro">
               <Center h={"100%"}>
                 <Section title={"Describe yourself"}>

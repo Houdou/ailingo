@@ -5,7 +5,7 @@ import {
   Group,
   Header,
   Image,
-  MantineProvider,
+  MantineProvider, MediaQuery,
   Text,
   ThemeIcon,
   Title
@@ -21,6 +21,7 @@ import {Logout, Moon, Sun} from "tabler-icons-react";
 import {atom, useRecoilState, useRecoilValue, useResetRecoilState} from "recoil";
 import localStorageEffect from "./effects/localStorage.ts";
 import {userState} from "./user/user.state.ts";
+import {useMediaQuery} from "@mantine/hooks";
 
 const defaultTheme = (() => {
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -42,6 +43,7 @@ const AppHeader = () => {
   const [theme, setTheme] = useRecoilState(themeState);
   const [user, setUser] = useRecoilState(userState);
   const resetUser = useResetRecoilState(userState);
+  const mobile = useMediaQuery("(min-width: 360px)");
 
   const navigate = useNavigate();
 
@@ -52,16 +54,23 @@ const AppHeader = () => {
           <Center maw={40} style={{ borderRadius:"50%", overflow: "hidden" }}>
             <Image src={logo} maw={"48px"} />
           </Center>
-          <Title fw={300} fz={44} order={1} variant={"gradient"}>
+          <Title fw={300} fz={mobile ? 24 : 44} order={1} variant={"gradient"}>
             <Link to={"/"}>
               AILingo
             </Link>
           </Title>
         </Group>
         <Group spacing={8}>
-          <Text>
-            Welcome, {user.name ?? "New joiner"}
-          </Text>
+          <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+            <Text styles={{display: 'none'}}>
+              Welcome, {user.name ?? "New joiner"}
+            </Text>
+          </MediaQuery>
+          <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+            <Text styles={{display: 'none'}}>
+              {user.name ?? "New joiner"}
+            </Text>
+          </MediaQuery>
           {
             theme === "light"
               ? (
