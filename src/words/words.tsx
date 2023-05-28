@@ -46,13 +46,11 @@ function Words() {
             <Word key={word.word.english} word={word}/>
             <Center h={"96px"}>
               <Button
-                w={"140px"}
-                h={"40px"}
                 onClick={() => {
                   GoNext();
                 }}
                 variant="gradient"
-                gradient={{ from: 'teal', to: 'blue', deg: 60 }}
+                size={"lg"}
               >{
                 index === words.length - 1 ? "Review" : "Next word"
               }</Button>

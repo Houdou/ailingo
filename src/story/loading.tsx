@@ -1,5 +1,4 @@
 import {Paper, Skeleton, Stack} from "@mantine/core";
-import React from "react";
 
 function Loading() {
   const lineHeight = 12;

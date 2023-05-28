@@ -1,8 +1,116 @@
+import {
+  Button,
+  Container,
+  Divider,
+  MultiSelect,
+  Paper,
+  Stack,
+  Text,
+  Flex,
+  TextInput,
+  Title,
+  Center, Stepper, Group, Grid
+} from "@mantine/core";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+
+const Section = ({
+  title,
+  children
+}) => {
+  return (
+    <Container pr={"24px"} maw={"max(54rem, 100%)"}>
+      <Title fz={42} fw={100}>{title}</Title>
+      <Divider ml={"-4px"} mb={"12px"} w={"calc(100% + 8px)"} style={{borderTopWidth: "0.15rem"}}/>
+      {
+        children
+      }
+    </Container>
+  )
+}
+
 const Onboarding = () => {
+    const [step, setStep] = useState(0);
+
+    const [data, setData] = useState([
+      { value: "saas", label: "Saas" },
+      { value: "business_english", label: "Business English" },
+      // { value: "saas", label: "Saas" },
+    ]);
+
+    const navigate = useNavigate();
+
     return (
-        <div>
-            <h1>Onboarding</h1>
-        </div>
+        <Flex direction={"column"} justify={"space-between"} w={"100%"} h={"90vh"}>
+          <Stepper active={step} size="sm" maw={"64rem"} w={"100%"} m={"0 auto"}>
+            <Stepper.Step label="First step" description="Self intro">
+              <Center h={"80vh"}>
+                <Section title={"Describe yourself"}>
+                  <TextInput
+                    placeholder="The name you want to be called by"
+                    size={"lg"}
+                  />
+                </Section>
+              </Center>
+            </Stepper.Step>
+            <Stepper.Step label="Second step" description="Choose interests">
+              <Center h={"80vh"}>
+                <Section title={"Interested domain"}>
+                  <MultiSelect
+                    searchable
+                    creatable
+                    getCreateLabel={(query) => `+ Create ${query}`}
+                    onCreate={(query) => {
+                      const normalized_query = String(query).toLowerCase().trim().replace(/\s+/g, "_");
+                      const item = { value: normalized_query, label: query };
+                      setData((current) => [...current, item]);
+                      return item;
+                    }}
+                    data={data}
+                    placeholder="Pick all that you like"
+                    size={"lg"}
+                  />
+                </Section>
+              </Center>
+            </Stepper.Step>
+            <Stepper.Step label="Final step" description="Get your">
+              <Center h={"80vh"}>
+                <Section title={"That's it, you're all set!"}></Section>
+              </Center>
+            </Stepper.Step>
+          </Stepper>
+          <Grid w={"100%"} justify={"space-around"} maw={"600px"} ml={"auto"} mr={"auto"}>
+            <Grid.Col span={3}>
+
+              <Button variant={"default"} size={"xl"} radius={"sm"} w={"100%"}
+                  onClick={() => step > 0 && setStep(step - 1)}
+              >
+                <Text fw={"300"} fz={"24px"}>
+                  Back
+                </Text>
+              </Button>
+            </Grid.Col>
+            <Grid.Col span={9}>
+
+              <Button variant={"gradient"} size={"xl"} radius={"sm"} w={"100%"}
+                      onClick={() => {
+                        if(step < 2) {
+                          setStep(step + 1)
+                          return;
+                        }
+                        // Handle submit
+                        navigate("/words/1");
+                      }}
+              >
+                <Text fw={"300"} fz={"24px"}>
+                  {
+                    step < 2 ? "Next" : "Get started"
+                  }
+                </Text>
+              </Button>
+            </Grid.Col>
+          </Grid>
+        </Flex>
     )
 }
 
