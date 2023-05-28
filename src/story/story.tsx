@@ -1,6 +1,6 @@
 import {Button, Center, Mark, Paper, Stack, Flex, Text, Container, Space} from "@mantine/core";
 import Loading from "./loading.tsx";
-import React, {Fragment, startTransition, Suspense, useEffect, useTransition} from "react";
+import React, {Fragment, Suspense, useEffect, useState, useTransition} from "react";
 import {useRecoilCallback, useRecoilValue} from "recoil";
 import {storyOverrideState, storyState} from "./story.state.ts";
 import { wordsState } from "../words/words.state.ts";
@@ -15,16 +15,19 @@ function Story() {
   const sentences = story.split('\n')
   const words = useRecoilValue(wordsState);
 
+  const [loading, setLoading] = useState(false);
+
   const regenerateStory = useRecoilCallback(({snapshot, set}) => async () => {
+    setLoading(true);
     const words = await snapshot.getPromise(wordsState);
     const user = await snapshot.getPromise(userState);
 
     const story = await getStory(words, user);
 
     set(storyOverrideState, story);
+    setLoading(false);
   });
 
-  const [isPending, startTransition] = useTransition();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -32,6 +35,10 @@ function Story() {
       navigate("/");
     }
   }, []);
+
+  if(loading) {
+    return <Loading />
+  }
 
   return (
     <Flex direction={"column"} justify={"space-between"} align={"center"} h={"90vh"} gap={"1rem"} p={"1rem 0"}>
@@ -72,9 +79,7 @@ function Story() {
           size={"xl"}
           variant="gradient"
           onClick={() => {
-            startTransition(() => {
-              regenerateStory();
-            });
+            regenerateStory();
           }}
         >换篇文章</Button>
       </Center>
