@@ -1,12 +1,15 @@
 import {Container, Divider, Title} from "@mantine/core";
+import {useMediaQuery} from "@mantine/hooks";
 
 export const Section = ({
-                          title,
-                          children
-                        }) => {
+  title,
+  children
+}) => {
+  const mobile = useMediaQuery("(min-width: 360px)");
+
   return (
     <Container pr={"24px"} maw={"max(54rem, 100%)"}>
-      <Title fz={42} fw={100}>{title}</Title>
+      <Title fz={mobile ? 32 : 42} fw={100}>{title}</Title>
       <Divider ml={"-4px"} mb={"12px"} w={"calc(100% + 8px)"} style={{borderTopWidth: "0.15rem"}}/>
       {
         children

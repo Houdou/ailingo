@@ -164,6 +164,11 @@ const App = () => {
                 size: "lg",
                 radius: "xs",
               }
+            },
+            Button: {
+              defaultProps: {
+                size: "xl"
+              }
             }
           }
         }}
