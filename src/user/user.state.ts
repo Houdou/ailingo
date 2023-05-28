@@ -5,7 +5,8 @@ import {User} from "../types";
 
 const newUser = () => {
   return {
-    id: uuid()
+    id: uuid(),
+    onboarded: false
   }
 }
 

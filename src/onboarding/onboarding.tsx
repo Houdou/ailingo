@@ -1,8 +1,11 @@
 import {Button, Center, createStyles, Flex, Grid, MultiSelect, Stepper, Text, TextInput} from "@mantine/core";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useMediaQuery} from "@mantine/hooks";
 import {Section} from "../layout/section.tsx";
+import {useRecoilState} from "recoil";
+import {userState} from "../user/user.state.ts";
+import {useForm} from "@mantine/form";
 
 const useStyles = createStyles((theme) => ({
   content: {
@@ -11,7 +14,16 @@ const useStyles = createStyles((theme) => ({
 }))
 
 const Onboarding = () => {
+    const form = useForm({
+      initialValues: {
+        name: "",
+        scene: "",
+        tags: []
+      }
+    })
+
     const [step, setStep] = useState(0);
+    const [user, setUser] = useRecoilState(userState);
 
     const [data, setData] = useState([
       { value: "saas", label: "Saas" },
@@ -23,6 +35,12 @@ const Onboarding = () => {
 
     const navigate = useNavigate();
 
+    useEffect(() => {
+      if(user.onboarded) {
+        setStep(2);
+      }
+    }, []);
+
     return (
         <Flex direction={"column"} justify={"space-between"} w={"100%"} h={"90vh"}>
           <Stepper active={step} size="sm" maw={"64rem"} w={"100%"} m={"0 auto"} style={{flexGrow: 10}} classNames={{content: classes.content}}>
@@ -32,6 +50,7 @@ const Onboarding = () => {
                   <TextInput
                     placeholder="The name you want to be called by"
                     size={"lg"}
+                    {...form.getInputProps("name")}
                   />
                 </Section>
               </Center>
@@ -52,6 +71,7 @@ const Onboarding = () => {
                     data={data}
                     placeholder="Pick all that you like"
                     size={"lg"}
+                    {...form.getInputProps("tags")}
                   />
                 </Section>
               </Center>
@@ -80,6 +100,12 @@ const Onboarding = () => {
                       return;
                     }
                     // Handle submit
+                    setUser((current) => ({
+                      ...current,
+                      ...form.values,
+                      onboarded: true,
+                      id: user.id
+                    }));
                     navigate("/words/1");
                   }}
               >

@@ -1,5 +1,9 @@
 export interface User {
   id: string
+  name: string
+  scene: string
+  tags: string[]
+  onboarded: boolean
 }
 
 export interface Word {

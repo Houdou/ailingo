@@ -12,14 +12,15 @@ import {
 } from "@mantine/core";
 import "./app.css";
 
-import {createBrowserRouter, Link, Outlet, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Link, Outlet, RouterProvider, useNavigate} from "react-router-dom";
 import {Onboarding} from "./onboarding/onboarding.tsx";
 import {Words} from "./words/words.tsx";
 import {Story} from "./story/story.tsx";
 import logo from './assets/logo.png';
-import {Moon, Sun} from "tabler-icons-react";
-import {atom, useRecoilState, useRecoilValue} from "recoil";
+import {Logout, Moon, Sun} from "tabler-icons-react";
+import {atom, useRecoilState, useRecoilValue, useResetRecoilState} from "recoil";
 import localStorageEffect from "./effects/localStorage.ts";
+import {userState} from "./user/user.state.ts";
 
 const defaultTheme = (() => {
   const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -39,6 +40,10 @@ const themeState = atom<ColorScheme>({
 
 const AppHeader = () => {
   const [theme, setTheme] = useRecoilState(themeState);
+  const [user, setUser] = useRecoilState(userState);
+  const resetUser = useResetRecoilState(userState);
+
+  const navigate = useNavigate();
 
   return (
     <Header height={64}>
@@ -53,9 +58,9 @@ const AppHeader = () => {
             </Link>
           </Title>
         </Group>
-        <Group>
+        <Group spacing={8}>
           <Text>
-            Welcome, User
+            Welcome, {user.name ?? "New joiner"}
           </Text>
           {
             theme === "light"
@@ -70,7 +75,12 @@ const AppHeader = () => {
                 </ThemeIcon>
               )
           }
-
+          <ThemeIcon size={"lg"} color={"#6080FB"}>
+            <Logout onClick={() => {
+              resetUser();
+              navigate("/");
+            }}></Logout>
+          </ThemeIcon>
         </Group>
       </Flex>
     </Header>
