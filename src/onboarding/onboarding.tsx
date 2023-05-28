@@ -1,4 +1,4 @@
-import {Button, Center, createStyles, Flex, Grid, MultiSelect, Stepper, Text, TextInput} from "@mantine/core";
+import {Button, Center, createStyles, Flex, Grid, MultiSelect, Select, Stepper, Text, TextInput} from "@mantine/core";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {useMediaQuery} from "@mantine/hooks";
@@ -13,6 +13,8 @@ const useStyles = createStyles((theme) => ({
   }
 }))
 
+const TotalSteps = 3;
+
 const Onboarding = () => {
     const form = useForm({
       initialValues: {
@@ -25,11 +27,15 @@ const Onboarding = () => {
     const [step, setStep] = useState(0);
     const [user, setUser] = useRecoilState(userState);
 
-    const [data, setData] = useState([
-      { value: "saas", label: "Saas" },
-      { value: "business_english", label: "Business English" },
-      // { value: "saas", label: "Saas" },
+    const [scenes, setScenes] = useState([
+      { value: "Ecommerce & SaaS", label: "Ecommerce & SaaS" },
+      { value: "coming soon", label: "More coming soon!", disabled: true }
     ]);
+    const [tags, setTags] = useState([
+      { value: "business_english", label: "Business English" },
+      { value: "campus", label: "Campus", disabled: true },
+    ]);
+
     const { classes } = useStyles();
     const narrow = useMediaQuery("(max-width: 600px)");
 
@@ -37,9 +43,11 @@ const Onboarding = () => {
 
     useEffect(() => {
       if(user.onboarded) {
-        setStep(2);
+        setStep(TotalSteps);
+      } else {
+        setStep(0);
       }
-    }, []);
+    }, [user.id, user.onboarded]);
 
     return (
         <Flex direction={"column"} justify={"space-between"} w={"100%"} h={"90vh"}>
@@ -55,7 +63,27 @@ const Onboarding = () => {
                 </Section>
               </Center>
             </Stepper.Step>
-            <Stepper.Step label="Second step" description="Choose interests">
+            <Stepper.Step label="Second step" description="Choose scene">
+              <Center h={"100%"}>
+                <Section title={"Expected scenario"}>
+                  <Select
+                    searchable
+                    creatable
+                    getCreateLabel={(query) => `+ Create ${query}`}
+                    onCreate={(query) => {
+                      const normalized_query = String(query).toLowerCase().trim().replace(/\s+/g, "_");
+                      const item = { value: normalized_query, label: query };
+                      setScenes((current) => [...current, item]);
+                      return item;
+                    }}
+                    data={scenes}
+                    size={"lg"}
+                    {...form.getInputProps("scene")}
+                  />
+                </Section>
+              </Center>
+            </Stepper.Step>
+            <Stepper.Step label="Third step" description="Choose interests">
               <Center h={"100%"}>
                 <Section title={"Interested domain"}>
                   <MultiSelect
@@ -65,10 +93,10 @@ const Onboarding = () => {
                     onCreate={(query) => {
                       const normalized_query = String(query).toLowerCase().trim().replace(/\s+/g, "_");
                       const item = { value: normalized_query, label: query };
-                      setData((current) => [...current, item]);
+                      setTags((current) => [...current, item]);
                       return item;
                     }}
-                    data={data}
+                    data={tags}
                     placeholder="Pick all that you like"
                     size={"lg"}
                     {...form.getInputProps("tags")}
@@ -76,7 +104,7 @@ const Onboarding = () => {
                 </Section>
               </Center>
             </Stepper.Step>
-            <Stepper.Step label="Final step" description="Get your">
+            <Stepper.Step label="Finish" description="">
               <Center h={"100%"}>
                 <Section title={"That's it, you're all set!"}></Section>
               </Center>
@@ -95,7 +123,7 @@ const Onboarding = () => {
             <Grid.Col span={9}>
               <Button variant={"gradient"} size={"xl"} radius={"sm"} w={"100%"}
                   onClick={() => {
-                    if(step < 2) {
+                    if(step < TotalSteps) {
                       setStep(step + 1)
                       return;
                     }
@@ -111,7 +139,7 @@ const Onboarding = () => {
               >
                 <Text fw={"300"} fz={"24px"}>
                   {
-                    step < 2 ? "Next" : "Get started"
+                    step < TotalSteps ? "Next" : "Get started"
                   }
                 </Text>
               </Button>
