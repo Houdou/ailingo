@@ -14,7 +14,7 @@ const getStory = async (words: Word[], user: User) => {
 }
 
 const getFakeStory = async (words: Word[]) => {
-  await new Promise(resolve => setTimeout(resolve, 30000));
+  await new Promise(resolve => setTimeout(resolve, 1500));
 
   if(words && words[0].word.english === "Low-hanging fruit") {
     return {
