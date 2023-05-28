@@ -9,9 +9,10 @@ import {useForm} from "@mantine/form";
 
 const useStyles = createStyles((theme) => ({
   stepBody: {
-    '@media (min-width: 360px)': {
+    '@media (max-width: 600px)': {
       display: "none",
-    }
+    },
+    display: "initial"
   },
   content: {
     height: "100%"
