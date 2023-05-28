@@ -1,8 +1,7 @@
 import {atom, selector} from "recoil";
 import {wordsState} from "../words/words.state.ts";
-import {getStory, getFakeStory} from "./story.hook.ts";
 import {userState} from "../user/user.state.ts";
-import * as _ from 'lodash';
+import {getFakeStory, getStory} from "./story.hook.ts";
 
 const storyState = selector<string>({
   key: 'story',
@@ -13,14 +12,22 @@ const storyState = selector<string>({
       return "";
     }
 
-    // const {story: new_story} = await getFakeStory(words);
-    // return new_story;
+    const overrides = await get(storyOverrideState);
+    if(!overrides) {
+      const {story: new_story} = await getFakeStory(words);
+      return new_story;
+    }
 
-    const story = await getStory(words, user)
-    return story;
+    return overrides;
   }
 });
 
+const storyOverrideState = atom<string>({
+  key: 'storyOverride',
+  default: '',
+})
+
 export {
   storyState,
+  storyOverrideState
 }

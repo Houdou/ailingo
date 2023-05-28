@@ -13,16 +13,19 @@ const getStory = async (words: Word[], user: User) => {
   return story;
 }
 
-const getFakeStory = async () => {
+const getFakeStory = async (words: Word[]) => {
   await new Promise(resolve => setTimeout(resolve, 1000));
 
-  return { story: `As an Ecommerce & SaaS expert, I had to advise the team on how to avoid penalties for non-compliance with Omnichannel regulations.
+  if(words && words[0].word.english === "Low-hanging fruit") {
+    return {
+      story: `As an Ecommerce & SaaS expert, I had to advise the team on how to avoid penalties for non-compliance with Omnichannel regulations.
 作为电商和SaaS专家，我必须建议团队如何遵守Omnichannel规定以避免罚款。
 We had a consensus on the importance of creating a seamless customer experience across multiple channels.
 我们达成了一致，认为在多个渠道上创造无缝的客户体验至关重要。
 With my bilingual skills, I was able to communicate the necessary changes to our Chinese suppliers and partners effortlessly.
 拥有双语技能，我可以毫不费力地向我们的中国供应商和合作伙伴传达必要的改变。`
-  };
+    };
+  }
 
   return { story: `The company, a well-established player in the Ecommerce and SaaS space, faced a penalty from a regulatory body for non-compliance with data privacy laws. 公司是电商和SaaS领域内一个知名的公司，面临着因未遵守数据隐私法而被监管机构处以罚款的问题。
 

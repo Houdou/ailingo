@@ -1,22 +1,35 @@
-import {Button, Center, Mark, Paper, Stack, Flex, Text, Container} from "@mantine/core";
+import {Button, Center, Mark, Paper, Stack, Flex, Text, Container, Space} from "@mantine/core";
 import Loading from "./loading.tsx";
-import React, {Suspense, useEffect} from "react";
-import {useRecoilValue} from "recoil";
-import {storyState} from "./story.state.ts";
+import React, {Fragment, startTransition, Suspense, useEffect, useTransition} from "react";
+import {useRecoilCallback, useRecoilValue} from "recoil";
+import {storyOverrideState, storyState} from "./story.state.ts";
 import { wordsState } from "../words/words.state.ts";
 import {useNavigate} from "react-router-dom";
 import { highlightMatches } from "./highlightMatches.ts";
 import {Section} from "../layout/section.tsx";
+import {getStory} from "./story.hook.ts";
+import {userState} from "../user/user.state.ts";
 
 function Story() {
   const story = useRecoilValue(storyState);
   const sentences = story.split('\n')
   const words = useRecoilValue(wordsState);
 
+  const regenerateStory = useRecoilCallback(({snapshot, set}) => async () => {
+    const words = await snapshot.getPromise(wordsState);
+    const user = await snapshot.getPromise(userState);
+
+    const story = await getStory(words, user);
+
+    set(storyOverrideState, story);
+  });
+
+  const [isPending, startTransition] = useTransition();
   const navigate = useNavigate();
+
   useEffect(() => {
-    if(story === "") {
-      navigate("/words/0");
+    if(!story) {
+      navigate("/");
     }
   }, []);
 
@@ -33,9 +46,9 @@ function Story() {
                       highlightMatches(
                         s,
                         words.map(w => w.word.english)
-                      ).map(c => c.type === 'highlight'
-                        ? <Mark>{c.value}</Mark>
-                        :<>{c.value}</>
+                      ).map((c, idx) => c.type === 'highlight'
+                        ? <Mark key={`${i}${idx}`}>{c.value}</Mark>
+                        : <Fragment key={`${i}${idx}`}>{c.value}</Fragment>
                       )
                     }
                   </Text>)
@@ -46,14 +59,24 @@ function Story() {
         </Section>
       </Container>
 
-      <Center h={"6rem"}>
+      <Center h={"6rem"} pb={"1rem"}>
         <Button
           onClick={() => {
             navigate("/words/1")
           }}
-          variant="gradient"
+          color={"#a1c7ec"}
           size={"xl"}
         >Start new round</Button>
+        <Space w={"md"}/>
+        <Button
+          size={"xl"}
+          variant="gradient"
+          onClick={() => {
+            startTransition(() => {
+              regenerateStory();
+            });
+          }}
+        >换篇文章</Button>
       </Center>
     </Flex>
   );

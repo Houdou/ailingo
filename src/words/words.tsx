@@ -1,14 +1,24 @@
 import { Word } from "./word";
-import {Button, Center, Container, Flex} from "@mantine/core";
+import {Button, Center, Container, Flex, Grid, Loader, Modal, Space, ThemeIcon} from "@mantine/core";
 import { useWords } from "./words.hook.ts";
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {Section} from "../layout/section.tsx";
+import {
+  BrandDiscord,
+  BrandQq,
+  BrandTelegram,
+  BrandTiktok,
+  BrandTwitter,
+  BrandWechat,
+  BrandWeibo
+} from "tabler-icons-react";
 
 function Words() {
     const { word: word_param } = useParams();
     const [index, setIndex] = useState(0);
     const {loading, error, words, fetchFakeWords } = useWords();
+    const [share_modal, setShareModal] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -16,7 +26,7 @@ function Words() {
     }, []);
 
     if (loading) {
-      return <div>Loading...</div>;
+      return <Loader variant="bars" h={"20rem"}/>;
     }
 
     if (error) {
@@ -43,27 +53,51 @@ function Words() {
     }
 
     return (
-        <Flex direction={"column"} justify={"space-between"} align={"center"} w={"100%"} h={"90vh"} gap={"1rem"} p={"1rem 0"}>
-          <Container maw={"max(40rem, 60%)"} p={0}>
-            <Section title={"Learn new words"}>
-              <Center>
-                <Word key={word.word.english} word={word}/>
-              </Center>
-            </Section>
-          </Container>
-            <Center h={"6rem"}>
-              <Button
-                onClick={() => {
-                  GoNext();
-                }}
-                variant="gradient"
-                size={"xl"}
+        <>
+          <Modal opened={share_modal} onClose={() => setShareModal(false)} title={"Share"}>
+            <Word key={word.word.english} word={word}/>
+            <Space h={"md"} />
+            <Flex gap={8}>
+              <ThemeIcon color={"#6080FB"} size={"lg"}><BrandWechat /></ThemeIcon>
+              <ThemeIcon color={"#6080FB"} size={"lg"}><BrandWeibo /></ThemeIcon>
+              <ThemeIcon color={"#6080FB"} size={"lg"}><BrandQq /></ThemeIcon>
+              <ThemeIcon color={"#6080FB"} size={"lg"}><BrandDiscord /></ThemeIcon>
+              <ThemeIcon color={"#6080FB"} size={"lg"}><BrandTelegram /></ThemeIcon>
+              <ThemeIcon color={"#6080FB"} size={"lg"}><BrandTwitter /></ThemeIcon>
+              <ThemeIcon color={"#6080FB"} size={"lg"}><BrandTiktok /></ThemeIcon>
+            </Flex>
+          </Modal>
+          <Flex direction={"column"} justify={"space-between"} align={"center"} w={"100%"} h={"90vh"} gap={"1rem"} p={"1rem 0"}>
+            <Container maw={"max(40rem, 60%)"} p={0}>
+              <Section title={"Learn new words"}>
+                <Center>
+                  <Word key={word.word.english} word={word}/>
+                </Center>
+              </Section>
+            </Container>
+            <Center h={"6rem"} pb={"1rem"}>
+              <Flex gap={"1rem"}>
+                <Button
+                  color={"#6080FB"}
+                  size={"xl"}
+                  onClick={() => {
+                    setShareModal(true);
+                  }}
+                >Share</Button>
+                <Button
+                  onClick={() => {
+                    GoNext();
+                  }}
+                  variant="gradient"
+                  size={"xl"}
 
-              >{
-                index === words.length - 1 ? "Review" : "Next word"
-              }</Button>
+                >{
+                  index === words.length - 1 ? "Review" : "Next word"
+                }</Button>
+              </Flex>
             </Center>
-        </Flex>
+          </Flex>
+        </>
     );
 }
 

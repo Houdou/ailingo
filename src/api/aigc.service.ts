@@ -1,4 +1,4 @@
-const HostURL = "http://hackathon-2023-bizai.as-in.io/v1";
+const HostURL = import.meta.env.VITE_AIGC_HOST;
 
 const generateStory = async (body: object): Promise<string> => {
   const response = await fetch(`${HostURL}/generations/reviews`, {
