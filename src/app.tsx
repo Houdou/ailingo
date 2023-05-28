@@ -86,7 +86,7 @@ const App = () => {
                 <AppShell padding={"md"}
                           header={<AppHeader />}
                 >
-                  <Center id="app" w={"100%"}>
+                  <Center id="app" w={"100%"} h={"100%"}>
                     <Flex direction={"column"} justify={"space-between"} align={"center"} w={"100%"} h={"100%"}>
                       <Outlet />
                     </Flex>

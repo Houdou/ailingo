@@ -1,4 +1,4 @@
-import {Mark, Paper, Stack, Text} from "@mantine/core";
+import {Button, Center, Mark, Paper, Stack, Flex, Text, Container} from "@mantine/core";
 import Loading from "./loading.tsx";
 import React, {Suspense, useEffect} from "react";
 import {useRecoilValue} from "recoil";
@@ -6,6 +6,7 @@ import {storyState} from "./story.state.ts";
 import { wordsState } from "../words/words.state.ts";
 import {useNavigate} from "react-router-dom";
 import { highlightMatches } from "./highlightMatches.ts";
+import {Section} from "../layout/section.tsx";
 
 function Story() {
   const story = useRecoilValue(storyState);
@@ -21,25 +22,41 @@ function Story() {
 
 
   return (
-    <Paper shadow={"md"} withBorder p={"md"} maw={"600px"}>
-      <Stack>
-      {
-        sentences.map(
-          s => (<Text>
-            {
-              highlightMatches(
-                s,
-                words.map(w => w.word.english)
-              ).map(c => c.type === 'highlight'
-                ? <Mark>{c.value}</Mark>
-                :<>{c.value}</>
-              )
-            }
-          </Text>)
-        )
-      }
-      </Stack>
-    </Paper>
+    <Flex direction={"column"} justify={"space-between"} align={"center"} h={"90vh"} gap={"1rem"} p={"1rem"}>
+      <Container maw={"max(40rem, 60%)"}>
+        <Section title={"Review words"}>
+          <Paper shadow={"md"} withBorder p={"md"}>
+            <Stack>
+              {
+                sentences.map(
+                  s => (<Text>
+                    {
+                      highlightMatches(
+                        s,
+                        words.map(w => w.word.english)
+                      ).map(c => c.type === 'highlight'
+                        ? <Mark>{c.value}</Mark>
+                        :<>{c.value}</>
+                      )
+                    }
+                  </Text>)
+                )
+              }
+            </Stack>
+          </Paper>
+        </Section>
+      </Container>
+
+      <Center h={"6rem"}>
+        <Button
+          onClick={() => {
+            navigate("/words/0")
+          }}
+          variant="gradient"
+          size={"xl"}
+        >Start new round</Button>
+      </Center>
+    </Flex>
   );
 }
 

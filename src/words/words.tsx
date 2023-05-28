@@ -1,8 +1,9 @@
 import { Word } from "./word";
-import {Button, Center, Flex} from "@mantine/core";
+import {Button, Center, Container, Flex} from "@mantine/core";
 import { useWords } from "./words.hook.ts";
 import React, {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
+import {Section} from "../layout/section.tsx";
 
 function Words() {
     const { word: word_param } = useParams();
@@ -42,9 +43,15 @@ function Words() {
     }
 
     return (
-        <Flex direction={"column"} justify={"space-between"} align={"center"} h={"100%"}>
-            <Word key={word.word.english} word={word}/>
-            <Center h={"96px"}>
+        <Flex direction={"column"} justify={"space-between"} align={"center"} w={"100%"} h={"90vh"} gap={"1rem"} p={"1rem"}>
+          <Container maw={"max(40rem, 60%)"}>
+            <Section title={"Learn new words"}>
+              <Center>
+                <Word key={word.word.english} word={word}/>
+              </Center>
+            </Section>
+          </Container>
+            <Center h={"6rem"}>
               <Button
                 onClick={() => {
                   GoNext();
