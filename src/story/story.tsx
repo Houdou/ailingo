@@ -10,7 +10,6 @@ import {Section} from "../layout/section.tsx";
 
 function Story() {
   const story = useRecoilValue(storyState);
-  console.log(story);
   const sentences = story.split('\n')
   const words = useRecoilValue(wordsState);
 
@@ -21,7 +20,6 @@ function Story() {
     }
   }, []);
 
-
   return (
     <Flex direction={"column"} justify={"space-between"} align={"center"} h={"90vh"} gap={"1rem"} p={"1rem 0"}>
       <Container maw={"max(40rem, 60%)"} p={0}>
@@ -30,7 +28,7 @@ function Story() {
             <Stack>
               {
                 sentences.map(
-                  s => (<Text>
+                  (s, i) => (<Text key={`story line ${i}`}>
                     {
                       highlightMatches(
                         s,

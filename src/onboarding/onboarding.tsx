@@ -134,7 +134,7 @@ const Onboarding = () => {
                       onboarded: true,
                       id: user.id
                     }));
-                    navigate("/words/1");
+                    navigate("/words/0");
                   }}
               >
                 <Text fw={"300"} fz={"24px"}>
